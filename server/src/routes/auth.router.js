@@ -9,7 +9,7 @@ authRouter.post('/signup', async (req, res) => {
   const { email, name, password } = req.body;
 
   if (!email || !name || !password) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res.status(400).json({ error: 'Пропущены поля для заполнения' });
   }
 
   try {
@@ -19,7 +19,7 @@ authRouter.post('/signup', async (req, res) => {
     });
 
     if (!created) {
-      return res.status(400).json({ error: 'User already exists' });
+      return res.status(400).json({ error: 'Пользователь уже зарегистрирован' });
     }
     const plainUser = user.get();
     delete plainUser.password;
@@ -31,14 +31,14 @@ authRouter.post('/signup', async (req, res) => {
       .json({ user: plainUser, accessToken });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Ошибка сервера' });
   }
 });
 
 authRouter.post('/signin', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res.status(400).json({ error: 'Пропущены поля' });
   }
 
   try {
@@ -62,13 +62,12 @@ authRouter.post('/signin', async (req, res) => {
       .json({ user: plainUser, accessToken });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Ошибка сервера' });
   }
 });
 
 authRouter.get('/logout', (req, res) => {
-  res.clearCookie('refreshToken')
-  .sendStatus(200);
+  res.clearCookie('refreshToken').sendStatus(200);
 });
 
 module.exports = authRouter;

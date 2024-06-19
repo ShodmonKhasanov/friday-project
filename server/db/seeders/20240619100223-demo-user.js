@@ -13,15 +13,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    await queryInterface.bulkInsert('Users', [
-      {
-        name: 'John Doe',
-        email: '123@123',
-        password: await bcrypt.hash('123', 5),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
+ // Тёма, тут будут сиды, сгенерируй с GPT
   },
 
   async down(queryInterface, Sequelize) {
