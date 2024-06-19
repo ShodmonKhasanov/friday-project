@@ -12,6 +12,7 @@ app.get('/', async (req, res) => {
 
 // Кирилл, ручки на тебе
 
+
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
