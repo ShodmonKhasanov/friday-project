@@ -1,27 +1,31 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button'; // Corrected the import path
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 
 export default function NavBar({ user, logoutHandler }) {
+  const handleReload = () => {
+    window.location.href = '/';
+  };
   return (
-    <Navbar bg='dark' data-bs-theme='dark'>
+    <Navbar bg='dark' data-bs-theme='dark' style={{ height: '80px', fontSize: '20px' }}>
       <Container>
         <Nav className='me-auto'>
-          <NavLink to='/' className='nav-link'>
+          <NavLink to='/' className='nav-link' onClick={handleReload}>
             Главная
           </NavLink>
           {user.data && (
-            <NavLink to='/account' className='nav-link'>
-              Профиль
-            </NavLink>
+            <>
+              <NavLink to='/account' className='nav-link'>
+                Профиль
+              </NavLink>
+              <NavLink to='/add' className='nav-link'>
+                Добавить инициативу
+              </NavLink>
+            </>
           )}
-          <Nav.Link href='#features'>Что-то ещё</Nav.Link>
-          <NavLink to='/add' className='nav-link'>
-            Добавить мероприятие
-          </NavLink>
         </Nav>
         <Nav>
           {!user.data && (

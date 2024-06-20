@@ -7,6 +7,7 @@ import Account from './components/pages/Account';
 import ProtectedRouter from './components/HOCs/ProtectedRouter';
 import useUser from './components/hooks/useUser';
 import AddInitiativePage from './components/pages/AddInitiativePage';
+import OneInitiativePage from './components/pages/OneInitiativePage';
 
 function App() {
   const { logoutHandler, signInHandler, signUpHandler, user } = useUser();
@@ -31,7 +32,6 @@ function App() {
             </ProtectedRouter>
           ),
         },
-
         {
           element: <ProtectedRouter isAllowd={user.status !== 'logged'} />,
           children: [
@@ -53,9 +53,14 @@ function App() {
             </ProtectedRouter>
           ),
         },
+        {
+          path: '/initiatives/:id',
+          element: <OneInitiativePage user={user} />,
+        },
       ],
     },
   ]);
+
   return <RouterProvider router={router} />;
 }
 
