@@ -10,7 +10,7 @@ initiativesRouter.get('/', async (req, res) => {
   }
 });
 
-initiativesRouter.post('/', async (req, res) => {
+initiativesRouter.post('/add', async (req, res) => {
   try {
     const { title, description, userId, initiativeTypeId, initLevelId, endDate } = req.body;
 

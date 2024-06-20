@@ -19,7 +19,9 @@ export default function NavBar({ user, logoutHandler }) {
             </NavLink>
           )}
           <Nav.Link href='#features'>Что-то ещё</Nav.Link>
-          <Nav.Link href='#pricing'>Добавить мероприятие</Nav.Link>
+          <NavLink to='/add' className='nav-link'>
+            Добавить мероприятие
+          </NavLink>
         </Nav>
         <Nav>
           {!user.data && (
