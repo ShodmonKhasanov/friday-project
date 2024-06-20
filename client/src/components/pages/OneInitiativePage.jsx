@@ -8,12 +8,16 @@ export default function OneInitiativePage({ user }) {
   const { id } = useParams();
   const [initiative, setInitiative] = useState({});
 
-  useEffect(() => {
-    axiosInstance(`/initiatives/${id}`).then((res) => setInitiative(res.data));
-  }, [id]);
+ useEffect(() => {
+   axiosInstance(`/initiatives/${id}`).then((res) => {
+     console.log(res.data); 
+     setInitiative(res.data);
+   });
+ }, [id]);
 
-  const calculatePercentage = (votesFor, totalVotes) => {
-    return totalVotes > 0 ? ((votesFor / totalVotes) * 100).toFixed(2) : 0;
+
+  const calculatePercentage = (votesFor, votesCount) => {
+    return votesCount > 0 ? ((votesFor / votesCount) * 100).toFixed(2) : 0;
   };
 
   return (
@@ -28,11 +32,12 @@ export default function OneInitiativePage({ user }) {
           </Card.Text>
           <Card.Text>
             <b>Количество проголосовавших: </b>
-            {initiative.totalVotes}
+            {initiative.votesCount}
           </Card.Text>
           <Card.Text>
             <b>Процент голосов "ЗА": </b>
-            {calculatePercentage(initiative.votesFor, initiative.totalVotes)}%
+            {/* {calculatePercentage(initiative.percentFor, initiative.votesCount)}% */}
+            {initiative.percentFor}%
           </Card.Text>
           <Card.Text>
             <b>Срок окончания голосования: </b>
@@ -40,7 +45,7 @@ export default function OneInitiativePage({ user }) {
           </Card.Text>
           <Card.Text>
             <b>Уровень инициативы: </b>
-            {initiative.level}
+            {initiative.initLevelId}
           </Card.Text>
           <Card.Text>
             <Link to={`/initiatives/author/${initiative.User?.id}`}>

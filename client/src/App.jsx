@@ -8,8 +8,9 @@ import ProtectedRouter from './components/HOCs/ProtectedRouter';
 import useUser from './components/hooks/useUser';
 import AddInitiativePage from './components/pages/AddInitiativePage';
 import OneInitiativePage from './components/pages/OneInitiativePage';
+import AuthorInitiativesPage from './components/pages/AuthorInitiativesPage';
 
-function App() {
+export default function App() {
   const { logoutHandler, signInHandler, signUpHandler, user } = useUser();
 
   const router = createBrowserRouter([
@@ -57,11 +58,13 @@ function App() {
           path: '/initiatives/:id',
           element: <OneInitiativePage user={user} />,
         },
+        {
+          path: '/initiatives/author/:id',
+          element: <AuthorInitiativesPage />,
+        },
       ],
     },
   ]);
 
   return <RouterProvider router={router} />;
 }
-
-export default App;
