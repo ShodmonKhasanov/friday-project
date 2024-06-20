@@ -68,4 +68,36 @@ initiativesRouter.get('/:id', async (req, res) => {
   }
 });
 
+initiativesRouter.put('/:id/vote', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { voteType } = req.body;
+    const initiative = await Initiative.findByPk(id);
+
+    if (!initiative) {
+      return res.status(404).json({ error: 'Инициатива не найдена' });
+    }
+
+    let updatedVotesCount = initiative.votesCount + 1;
+    let updatedPercentFor = initiative.percentFor;
+
+    if (voteType === 'for') {
+      const totalForVotes = (initiative.percentFor / 100) * initiative.votesCount + 1;
+      updatedPercentFor = (totalForVotes / updatedVotesCount) * 100;
+    } else if (voteType === 'against') {
+      const totalForVotes = (initiative.percentFor / 100) * initiative.votesCount;
+      updatedPercentFor = (totalForVotes / updatedVotesCount) * 100;
+    }
+
+    await initiative.update({
+      votesCount: updatedVotesCount,
+      percentFor: updatedPercentFor
+    });
+
+    return res.json(initiative);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = initiativesRouter;
