@@ -14,6 +14,7 @@ initiativesRouter.get('/', async (req, res) => {
 // Добавить новую инициативу
 initiativesRouter.post('/add', async (req, res) => {
   try {
+    console.log('Полученные данные:', req.body);
     const { title, description, userId, initiativeTypeId, initLevelId, endDate } = req.body;
 
     const initiative = await Initiative.create({
@@ -29,7 +30,8 @@ initiativesRouter.post('/add', async (req, res) => {
 
     return res.status(201).json(initiative);
   } catch (error) {
-    return res.status(400).json({ error: 'Ошибка 32 строка инит роутер' });
+    console.error('Ошибка на сервере:', error);
+    return res.status(400).json({ error: 'Ошибка при добавлении инициативы' });
   }
 });
 

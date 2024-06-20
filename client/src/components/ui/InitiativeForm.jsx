@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function InitiativeForm({ submitHandler, user }) {
   const [inputs, setInputs] = useState({
@@ -25,13 +25,7 @@ export default function InitiativeForm({ submitHandler, user }) {
   };
 
   return (
-    <Form
-      onSubmit={(e) => {
-        e.preventDefault();
-
-        submitHandler(e, inputs);
-      }}
-    >
+    <Form onSubmit={(e) => submitHandler(e, inputs)}>
       <Row>
         <Col>
           <Form.Group controlId='formTitle'>
@@ -97,10 +91,9 @@ export default function InitiativeForm({ submitHandler, user }) {
               isValid={inputs.initiativeTypeId.length > 0}
             >
               <option value=''>Выберите тип</option>
-              {/* Добавьте свои опции здесь */}
               <option value='1'>Медицина</option>
               <option value='2'>Транспорт</option>
-              <option value='2'>Благоустройство</option>
+              <option value='3'>Благоустройство</option>
             </Form.Control>
             <Form.Control.Feedback type='invalid'>
               Выберите тип инициативы
@@ -131,7 +124,7 @@ export default function InitiativeForm({ submitHandler, user }) {
           </Form.Group>
         </Col>
       </Row>
-      <Button variant='primary' type='submit'>
+      <Button variant='primary' type='submit' className='mt-3'>
         Сохранить
       </Button>
     </Form>
