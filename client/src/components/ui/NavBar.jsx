@@ -9,18 +9,17 @@ export default function NavBar({ user, logoutHandler }) {
   return (
     <Navbar bg='dark' data-bs-theme='dark'>
       <Container>
-        <Navbar.Brand href='/'>Лого</Navbar.Brand>
         <Nav className='me-auto'>
           <NavLink to='/' className='nav-link'>
-            Домой
+            Главная
           </NavLink>
           {user.data && (
             <NavLink to='/account' className='nav-link'>
-              Акк
+              Профиль
             </NavLink>
           )}
           <Nav.Link href='#features'>Что-то ещё</Nav.Link>
-          <Nav.Link href='#pricing'>Что-то ещё</Nav.Link>
+          <Nav.Link href='#pricing'>Добавить мероприятие</Nav.Link>
         </Nav>
         <Nav>
           {!user.data && (

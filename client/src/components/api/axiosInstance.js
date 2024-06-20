@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: "/api",
+  baseURL: '/api',
 });
 
-let accessToken = "";
+let accessToken = '';
 
 function setAccessToken(newToken) {
   accessToken = newToken;
@@ -22,7 +22,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const prevRequest = error.config;
     if (error.response.status === 403 && !prevRequest.sent) {
-      const response = await axios("/api/tokens/refresh");
+      const response = await axios('/api/tokens/refresh');
       accessToken = response.data.accessToken;
       prevRequest.sent = true;
       prevRequest.headers.Authorization = `Bearer ${accessToken}`;
