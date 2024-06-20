@@ -26,16 +26,16 @@ export default function NavBar({ user, logoutHandler }) {
           {!user.data && (
             <>
               <NavLink to='/auth/signin' className='nav-link'>
-                Зайти в хату!
+                Войти
               </NavLink>
               <NavLink to='/auth/signup' className='nav-link'>
-                Зарегайся!
+                Регистрация
               </NavLink>
               <span className='nav-link'>|</span>
             </>
           )}
           <span className='nav-link'>
-            Привет, {user.data ? user.data.name : 'странник'}
+            Привет, {user.data ? user.data.name : 'гость'}
           </span>
           {user.data && (
             <span className='nav-link'>
@@ -44,7 +44,7 @@ export default function NavBar({ user, logoutHandler }) {
                 variant='outline-danger'
                 size='sm'
               >
-                Выход там!
+                Выход
               </Button>
             </span>
           )}

@@ -8,26 +8,26 @@ export default function SignUpPage({ signUpHandler }) {
   return (
     <Row>
       <Col md={{ span: 6, offset: 3 }} className='mt-5'>
-        <h3 className='text-center'>Sign Up</h3>
+        <h3 className='text-center'>Регистрация</h3>
         <Form onSubmit={signUpHandler}>
           <Form.Group className='mb-3' controlId='formBasicEmail'>
-            <Form.Label>Имя</Form.Label>
+            <Form.Label>Полное имя</Form.Label>
             <Form.Control
               name='name'
               type='text'
-              placeholder='Enter first name'
+              placeholder='Введите Ф.И.О'
             />
           </Form.Group>
           <Form.Group className='mb-3' controlId='formBasicEmail'>
             <Form.Label>Почта</Form.Label>
-            <Form.Control name='email' type='email' placeholder='Enter email' />
+            <Form.Control name='email' type='email' placeholder='Введите почту' />
           </Form.Group>
           <Form.Group className='mb-3' controlId='formBasicEmail'>
             <Form.Label>Пароль</Form.Label>
             <Form.Control
               name='password'
               type='password'
-              placeholder='Enter password'
+              placeholder='Введите пароль'
             />
           </Form.Group>
           <Button variant='outline-primary' type='submit'>

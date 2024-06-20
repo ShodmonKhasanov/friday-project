@@ -8,18 +8,18 @@ export default function SignInPage({ signInHandler }) {
   return (
     <Row>
       <Col md={{ span: 6, offset: 3 }} className="mt-5">
-        <h3 className="text-center">Sign In</h3>
+        <h3 className="text-center">Войти</h3>
         <Form onSubmit={signInHandler}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Почта</Form.Label>
-            <Form.Control name="email" type="email" placeholder="Enter email" />
+            <Form.Control name="email" type="email" placeholder="Введите почту" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Пароль</Form.Label>
             <Form.Control
               name="password"
               type="password"
-              placeholder="Enter password"
+              placeholder="Введите пароль"
             />
           </Form.Group>
           <Button variant="outline-primary" type="submit">
