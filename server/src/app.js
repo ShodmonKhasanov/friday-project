@@ -7,7 +7,7 @@ const authRouter = require('./routes/auth.router');
 const app = express();
 
 app.get('/', async (req, res) => {
-  res.status(200).send(`<h1>Vse okay</h1`);
+  res.status(200).send(`<h1>Vse okay</h1>`);
 });
 
 // Кирилл, ручки на тебе
