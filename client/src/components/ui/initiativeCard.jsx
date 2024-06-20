@@ -3,8 +3,19 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import { StyledCard } from '../styled/StyledCard';
 import Button from 'react-bootstrap/esm/Button';
+import axiosInstance from '../api/axiosInstance';
 
 export default function PostCard({ initiative }) {
+  const handleVote = async (voteType) => {
+    try {
+      const response = await axiosInstance.put(`/initiatives/${initiative.id}/vote`, {
+        voteType
+      });
+      console.log('Vote updated:', response.data);
+    } catch (error) {
+      console.error('Error voting:', error);
+    }
+  };
   return (
     <Col md={4} className="mt-2 position-relative">
       <Card
@@ -23,6 +34,8 @@ export default function PostCard({ initiative }) {
             <Button variant="outline-danger" className="mb-2">
               Подробнее
             </Button>
+            <Button variant="danger" onClick={() => }>Отдать Голос За</Button>
+          <Button variant="success" onClick={() => }>Проголосовать против</Button>
             {/* {user.data && user.data.id === card.userId && (
               <Button
                 onClick={() => deleteHandler(card.id)}

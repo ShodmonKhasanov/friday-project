@@ -6,6 +6,7 @@ import SignInPage from './components/pages/SignInPage';
 import Account from './components/pages/Account';
 import ProtectedRouter from './components/HOCs/ProtectedRouter';
 import useUser from './components/hooks/useUser';
+import AddInitiativePage from './components/pages/AddInitiativePage';
 
 function App() {
   const { logoutHandler, signInHandler, signUpHandler, user } = useUser();
@@ -43,6 +44,14 @@ function App() {
               element: <SignInPage signInHandler={signInHandler} />,
             },
           ],
+        },
+        {
+          path: '/add',
+          element: (
+            <ProtectedRouter isAllowd={!!user} redirect='/login'>
+              <AddInitiativePage user={user} />
+            </ProtectedRouter>
+          ),
         },
       ],
     },
