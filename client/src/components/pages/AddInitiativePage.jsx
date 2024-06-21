@@ -11,7 +11,7 @@ export default function AddInitiativePage({ user }) {
     e.preventDefault();
     console.log(inputs);
     await axiosInstance.post('/initiatives/add', inputs);
-    navigate('/initiatives');
+    navigate('/');
   };
 
   return (

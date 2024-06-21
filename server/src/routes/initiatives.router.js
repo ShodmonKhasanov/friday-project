@@ -1,5 +1,7 @@
 const initiativesRouter = require('express').Router();
 const { Initiative, User } = require('../../db/models');
+const checkOwner = require('../middlewares/checkOwner');
+const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
 // Получить все инициативы
 initiativesRouter.get('/', async (req, res) => {
@@ -12,14 +14,14 @@ initiativesRouter.get('/', async (req, res) => {
 });
 
 // Добавить новую инициативу
-initiativesRouter.post('/add', async (req, res) => {
+initiativesRouter.post('/add', verifyAccessToken, async (req, res) => {
   try {
-    const { title, description, userId, initiativeTypeId, initLevelId, endDate } = req.body;
+    const { title, description, initiativeTypeId, initLevelId, endDate } = req.body;
 
     const initiative = await Initiative.create({
       title,
       description,
-      userId,
+      userId: res.locals.user.id,
       initiativeTypeId,
       initLevelId,
       endDate,
@@ -52,7 +54,7 @@ initiativesRouter.get('/:id', async (req, res) => {
 });
 
 // Обновить инициативу по ID
-initiativesRouter.put('/:id', async (req, res) => {
+initiativesRouter.put('/:id', checkOwner, async (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -142,6 +144,5 @@ initiativesRouter.get('/user/:userId', async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 });
-
 
 module.exports = initiativesRouter;
