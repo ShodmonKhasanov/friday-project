@@ -12,6 +12,7 @@ export default function InitiativeCard({ initiative }) {
   const [userVote, setUserVote] = useState(null);
   const navigate = useNavigate();
   const [isInitiativeExpired, setIsInitiativeExpired] = useState(false);
+  const [initiativeStatus, setInitiativeStatus] = useState('');
 
   useEffect(() => {
     // проверка с локал стореджа
@@ -24,7 +25,16 @@ export default function InitiativeCard({ initiative }) {
     const currentDate = new Date();
     const endDate = new Date(initiative.endDate);
     setIsInitiativeExpired(currentDate > endDate);
-  }, [initiative.id, initiative.endDate]);
+
+    // проверка результата голосования
+    if (isInitiativeExpired) {
+      if (initiative.percentFor < 50) {
+        setInitiativeStatus('Инициатива не принята');
+      } else {
+        setInitiativeStatus('Инициатива принята');
+      }
+    }
+  }, [initiative.id, initiative.endDate, initiative.percentFor, isInitiativeExpired]);
 
   const handleVote = async (voteType) => {
     if (userVote) {
@@ -64,6 +74,11 @@ export default function InitiativeCard({ initiative }) {
             Дата окончания инициативы:{' '}
             {new Date(initiative.endDate).toLocaleDateString()}
           </span>
+          {isInitiativeExpired && (
+            <span className={`p-2 ${initiative.percentFor < 50 ? 'text-danger' : 'text-success'}`}>
+              {initiativeStatus}
+            </span>
+          )}
           <div className='d-flex flex-row justify-content-end gap-4 mt-2'>
             <Button
               variant='outline-primary'
