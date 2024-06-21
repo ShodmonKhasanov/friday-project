@@ -9,14 +9,9 @@ export default function AddInitiativePage({ user }) {
 
   const submitHandler = async (e, inputs) => {
     e.preventDefault();
-    console.log('Отправляемые данные:', inputs);
-    try {
-      const response = await axiosInstance.post('/initiatives/add', inputs);
-      console.log('Ответ сервера:', response);
-      navigate('/initiatives');
-    } catch (error) {
-      console.error('Ошибка в добавлении инициативы:', error);
-    }
+    console.log(inputs);
+    await axiosInstance.post('/initiatives/add', inputs);
+    navigate('/');
   };
 
   return (

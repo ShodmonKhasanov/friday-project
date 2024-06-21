@@ -5,9 +5,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 
-export default function InitiativeForm({ submitHandler, user }) {
+export default function InitiativeForm({ submitHandler }) {
   const [inputs, setInputs] = useState({
-    userId: user.id,
     title: '',
     description: '',
     votesCount: 0,
