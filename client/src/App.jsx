@@ -6,8 +6,11 @@ import SignInPage from './components/pages/SignInPage';
 import Account from './components/pages/Account';
 import ProtectedRouter from './components/HOCs/ProtectedRouter';
 import useUser from './components/hooks/useUser';
+import AddInitiativePage from './components/pages/AddInitiativePage';
+import OneInitiativePage from './components/pages/OneInitiativePage';
+import AuthorInitiativesPage from './components/pages/AuthorInitiativesPage';
 
-function App() {
+export default function App() {
   const { logoutHandler, signInHandler, signUpHandler, user } = useUser();
 
   const router = createBrowserRouter([
@@ -30,7 +33,6 @@ function App() {
             </ProtectedRouter>
           ),
         },
-
         {
           element: <ProtectedRouter isAllowd={user.status !== 'logged'} />,
           children: [
@@ -44,10 +46,25 @@ function App() {
             },
           ],
         },
+        {
+          path: '/add',
+          element: (
+            <ProtectedRouter isAllowd={!!user} redirect='/login'>
+              <AddInitiativePage user={user} />
+            </ProtectedRouter>
+          ),
+        },
+        {
+          path: '/initiatives/:id',
+          element: <OneInitiativePage user={user} />,
+        },
+        {
+          path: '/initiatives/author/:id',
+          element: <AuthorInitiativesPage />,
+        },
       ],
     },
   ]);
+
   return <RouterProvider router={router} />;
 }
-
-export default App;

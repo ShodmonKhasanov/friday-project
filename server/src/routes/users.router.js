@@ -1,5 +1,5 @@
 const userRouter = require('express').Router();
-const { User } = require('../../db/models');
+const { User, Initiative } = require('../../db/models');
 
 userRouter.get('/', async (req, res) =>  {
     try {
@@ -9,8 +9,26 @@ userRouter.get('/', async (req, res) =>  {
     }); 
     res.json(users);
     } catch (error) {
-        res.status(500).json('Internal server error');
+        res.status(500).json('Ошибка сервера');
     }
+});
+
+userRouter.get('/:id/initiatives', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const initiatives = await Initiative.findAll({
+      where: { userId: id },
+      include: [{ model: User }],
+    });
+
+    if (!initiatives) {
+      return res.status(404).json({ error: 'Инициативы не найдены' });
+    }
+
+    res.json(initiatives);
+  } catch (error) {
+    res.status(500).json('Ошибка сервера');
+  }
 });
 
 module.exports = userRouter

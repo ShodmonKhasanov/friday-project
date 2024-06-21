@@ -6,15 +6,13 @@ import Loader from './HOCs/Loader';
 
 export default function Layout({ user, logoutHandler }) {
   return (
-    <>
-      <div style={{ backgroundColor: 'grey', height: '100vh' }}>
+    <> 
         <Loader showSpinner={user.status === 'fetching'}>
-          <Container>
             <NavBar user={user} logoutHandler={logoutHandler} />
+          <Container>
             <Outlet />
           </Container>
-        </Loader>
-      </div>
+        </Loader> 
     </>
   );
 }
