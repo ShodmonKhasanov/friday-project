@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import axiosInstance from '../api/axiosInstance';
 import InitiativeCard from '../ui/initiativeCard';
 import { StyledRow } from '../styled/StyledRow';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import '../styled/StyledMainpage.css'
 
 export default function MainPage() {
   const [initiatives, setInitiatives] = useState([]);
@@ -47,44 +49,77 @@ export default function MainPage() {
 
   return (
     <>
-      <Container className='text-center'>
-        <ButtonGroup className='mb-3'>
-          <Button variant='primary' onClick={() => toggleFilterType(1)}>
-            Медицина
-          </Button>
-          <Button variant='primary' onClick={() => toggleFilterType(2)}>
-            Транспорт
-          </Button>
-          <Button variant='primary' onClick={() => toggleFilterType(3)}>
-            Благоустройство
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup className='mb-3'>
-          <Button variant='secondary' onClick={() => toggleFilterLevel(1)}>
-            Федеральный
-          </Button>
-          <Button variant='secondary' onClick={() => toggleFilterLevel(2)}>
-            Региональный
-          </Button>
-          <Button variant='secondary' onClick={() => toggleFilterLevel(3)}>
-            Муниципальный
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup className='mb-3'>
-          <Button
-            variant='danger'
-            onClick={() => toggleFilterStatus('completed')}
-          >
-            Завершенные
-          </Button>
-          <Button
-            variant='success'
-            onClick={() => toggleFilterStatus('ongoing')}
-          >
-            Активные
-          </Button>
-        </ButtonGroup>
-        <StyledRow className='mt-3'>
+      <Container className="sticky-filter">
+        <Form className="checkbox-row">
+          <div className="form-check">
+            <Form.Check
+              type="checkbox"
+              id="type-medicine"
+              label="Тип инициативы: Медицина"
+              onClick={() => toggleFilterType(1)}
+            />
+          </div>
+          <div className="form-check">
+            <Form.Check
+              type="checkbox"
+              id="type-transport"
+              label="Тип инициативы: Транспорт"
+              onClick={() => toggleFilterType(2)}
+            />
+          </div>
+          <div className="form-check">
+            <Form.Check
+              type="checkbox"
+              id="type-improvement"
+              label="Тип инициативы: Благоустройство"
+              onClick={() => toggleFilterType(3)}
+            />
+          </div>
+          <div className="form-check">
+            <Form.Check
+              type="checkbox"
+              id="level-federal"
+              label="Уровень инициативы: Федеральный"
+              onClick={() => toggleFilterLevel(1)}
+            />
+          </div>
+          <div className="form-check">
+            <Form.Check
+              type="checkbox"
+              id="level-regional"
+              label="Уровень инициативы: Региональный"
+              onClick={() => toggleFilterLevel(2)}
+            />
+          </div>
+          <div className="form-check">
+            <Form.Check
+              type="checkbox"
+              id="level-municipal"
+              label="Уровень инициативы: Муниципальный"
+              onClick={() => toggleFilterLevel(3)}
+            />
+          </div>
+          <div className="form-check">
+            <Form.Check
+              type="checkbox"
+              id="status-completed"
+              label="Инициатива истекла"
+              onClick={() => toggleFilterStatus('completed')}
+            />
+          </div>
+          <div className="form-check">
+            <Form.Check
+              type="checkbox"
+              id="status-ongoing"
+              label="Инициатива активна"
+              onClick={() => toggleFilterStatus('ongoing')}
+            />
+          </div>
+        </Form>
+      </Container>
+
+      <Container className="text-center">
+        <StyledRow className="mt-3">
           {filterInitiatives().map((initiative) => (
             <InitiativeCard key={initiative.id} initiative={initiative} />
           ))}

@@ -1,0 +1,19 @@
+/* styles.css */
+.sticky-filter {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
+  padding: 10px 0;
+}
+
+.sticky-filter .form-check {
+  margin-bottom: 10px;
+}
+
+.checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
