@@ -9,6 +9,7 @@ import useUser from './components/hooks/useUser';
 import AddInitiativePage from './components/pages/AddInitiativePage';
 import OneInitiativePage from './components/pages/OneInitiativePage';
 import AuthorInitiativesPage from './components/pages/AuthorInitiativesPage';
+import ErrorPage from './components/pages/ErrorPage';
 
 export default function App() {
   const { logoutHandler, signInHandler, signUpHandler, user, getLevelName } = useUser();
@@ -63,6 +64,10 @@ export default function App() {
         {
           path: '/initiatives/author/:id',
           element: <AuthorInitiativesPage getLevelName={getLevelName} />,
+        },
+        {
+          path: '*',
+          element: <ErrorPage />,
         },
       ],
     },
