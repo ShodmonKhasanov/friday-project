@@ -30,8 +30,17 @@ export default function useUser() {
     if (!formData.email || !formData.password || !formData.name) {
       return alert('Пропущены поля для ввода инфы'); // ?
     }
-    axiosInstance.post('/auth/signup', formData).then(({ data }) => {
+    axiosInstance.post('/auth/signup', formData)
+    .then(({ data }) => {
       setUser({ status: 'logged', data: data.user });
+    })
+    .catch((error) => {
+      // добавил Проверку на ошибку 400, когда email уже используется
+      if (error.response && error.response.status === 400) {
+        alert('Эта почта уже используется. Пожалуйста, используйте другую почту.');
+      } else {
+        alert('Произошла ошибка при регистрации. Попробуйте снова позже.');
+      }
     });
   };
 
