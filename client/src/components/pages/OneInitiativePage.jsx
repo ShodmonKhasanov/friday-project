@@ -9,6 +9,8 @@ export default function OneInitiativePage({ user, getLevelName }) {
   const { id } = useParams();
   const [initiative, setInitiative] = useState({});
   const [hasVoted, setHasVoted] = useState(false);
+  const [isInitiativeExpired, setIsInitiativeExpired] = useState(false);
+  const [initiativeStatus, setInitiativeStatus] = useState('');
 
   useEffect(() => {
     // Check local storage if user has already voted for this initiative
@@ -20,8 +22,22 @@ export default function OneInitiativePage({ user, getLevelName }) {
     axiosInstance(`/initiatives/${id}`).then((res) => {
       console.log(res.data);
       setInitiative(res.data);
+
+      // Check if the initiative has expired
+      const currentDate = new Date();
+      const endDate = new Date(res.data.endDate);
+      setIsInitiativeExpired(currentDate > endDate);
+
+      // Check the result of the voting
+      if (isInitiativeExpired) {
+        if (res.data.percentFor < 50) {
+          setInitiativeStatus('Инициатива не принята');
+        } else {
+          setInitiativeStatus('Инициатива принята');
+        }
+      }
     });
-  }, [id]);
+  }, [id, isInitiativeExpired]);
 
   const handleVote = async (voteType) => {
     if (hasVoted) {
@@ -81,24 +97,33 @@ export default function OneInitiativePage({ user, getLevelName }) {
               Все инициативы автора
             </Link>
           </Card.Text>
-          <div>
-            <Button
-              onClick={() => handleVote('for')}
-              variant='success'
-              style={{ width: '100px', margin: '10px 10px' }}
-              disabled={hasVoted}
-            >
-              За
-            </Button>
-            <Button
-              onClick={() => handleVote('against')}
-              variant='danger'
-              style={{ width: '100px', margin: '10px 10px' }}
-              disabled={hasVoted}
-            >
-              Против
-            </Button>
-          </div>
+          {!isInitiativeExpired && (
+            <div>
+              <Button
+                onClick={() => handleVote('for')}
+                variant='success'
+                style={{ width: '100px', margin: '10px 10px' }}
+                disabled={hasVoted}
+              >
+                За
+              </Button>
+              <Button
+                onClick={() => handleVote('against')}
+                variant='danger'
+                style={{ width: '100px', margin: '10px 10px' }}
+                disabled={hasVoted}
+              >
+                Против
+              </Button>
+            </div>
+          )}
+          {isInitiativeExpired && (
+            <div>
+              <Card.Text>
+                <b>Статус инициативы:</b> {initiativeStatus}
+              </Card.Text>
+            </div>
+          )}
         </Card.Body>
       </Card>
     </Container>
