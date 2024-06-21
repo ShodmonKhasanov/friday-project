@@ -11,7 +11,7 @@ import OneInitiativePage from './components/pages/OneInitiativePage';
 import AuthorInitiativesPage from './components/pages/AuthorInitiativesPage';
 
 export default function App() {
-  const { logoutHandler, signInHandler, signUpHandler, user } = useUser();
+  const { logoutHandler, signInHandler, signUpHandler, user, getLevelName } = useUser();
 
   const router = createBrowserRouter([
     {
@@ -56,11 +56,13 @@ export default function App() {
         },
         {
           path: '/initiatives/:id',
-          element: <OneInitiativePage user={user} />,
+          element: (
+            <OneInitiativePage user={user} getLevelName={getLevelName} />
+          ),
         },
         {
           path: '/initiatives/author/:id',
-          element: <AuthorInitiativesPage />,
+          element: <AuthorInitiativesPage getLevelName={getLevelName} />,
         },
       ],
     },

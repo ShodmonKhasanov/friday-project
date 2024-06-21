@@ -28,7 +28,7 @@ export default function useUser() {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
     if (!formData.email || !formData.password || !formData.name) {
-      return alert("Пропущены поля для ввода инфы"); // ?
+      return alert('Пропущены поля для ввода инфы'); // ?
     }
     axiosInstance.post('/auth/signup', formData).then(({ data }) => {
       setUser({ status: 'logged', data: data.user });
@@ -46,10 +46,25 @@ export default function useUser() {
     });
   };
 
+  // Функция для получения названия уровня инициативы
+  const getLevelName = (levelId) => {
+    switch (levelId) {
+      case 1:
+        return 'Федеральный';
+      case 2:
+        return 'Региональный';
+      case 3:
+        return 'Муниципальный';
+      default:
+        return 'Неизвестный уровень';
+    }
+  };
+
   return {
     user,
     signInHandler,
     signUpHandler,
     logoutHandler,
+    getLevelName,
   };
 }

@@ -21,7 +21,9 @@ export default function Account({ user }) {
     <Row>
       <Col>
         <h2>Страница профиля: {user.data.name}</h2>
-        <p>Почта: {user.data.email}</p>
+        <p>
+          Почта: <a href={`mailto:${user.data.email}`}>{user.data.email}</a>
+        </p>
 
         <h3>Мои инициативы</h3>
         {initiatives.length > 0 ? (

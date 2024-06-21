@@ -4,21 +4,20 @@ import { useParams, Link } from 'react-router-dom';
 import axiosInstance from '../api/axiosInstance';
 import Card from 'react-bootstrap/Card';
 
-export default function OneInitiativePage({ user }) {
+export default function OneInitiativePage({ user, getLevelName }) {
   const { id } = useParams();
   const [initiative, setInitiative] = useState({});
 
- useEffect(() => {
-   axiosInstance(`/initiatives/${id}`).then((res) => {
-     console.log(res.data); 
-     setInitiative(res.data);
-   });
- }, [id]);
+  useEffect(() => {
+    axiosInstance(`/initiatives/${id}`).then((res) => {
+      console.log(res.data);
+      setInitiative(res.data);
+    });
+  }, [id]);
 
-
-  const calculatePercentage = (votesFor, votesCount) => {
-    return votesCount > 0 ? ((votesFor / votesCount) * 100).toFixed(2) : 0;
-  };
+  // const calculatePercentage = (votesFor, votesCount) => {
+  //   return votesCount > 0 ? ((votesFor / votesCount) * 100).toFixed(2) : 0;
+  // };
 
   return (
     <Container className='d-flex flex-column justify-content-center '>
@@ -36,7 +35,6 @@ export default function OneInitiativePage({ user }) {
           </Card.Text>
           <Card.Text>
             <b>Процент голосов "ЗА": </b>
-            {/* {calculatePercentage(initiative.percentFor, initiative.votesCount)}% */}
             {initiative.percentFor}%
           </Card.Text>
           <Card.Text>
@@ -45,7 +43,7 @@ export default function OneInitiativePage({ user }) {
           </Card.Text>
           <Card.Text>
             <b>Уровень инициативы: </b>
-            {initiative.initLevelId}
+            {getLevelName(initiative.initLevelId)}
           </Card.Text>
           <Card.Text>
             <Link to={`/initiatives/author/${initiative.User?.id}`}>
