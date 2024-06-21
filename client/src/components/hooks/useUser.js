@@ -44,16 +44,26 @@ export default function useUser() {
     });
   };
 
-  const signInHandler = (e) => {
+  const signInHandler = (e, setEmailError, setPasswordError) => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
     if (!formData.email || !formData.password) {
       return alert('Пропущены поля для ввода инфы');
     }
-    axiosInstance.post('/auth/signin', formData).then(({ data }) => {
-      setUser({ status: 'logged', data: data.user });
-    });
+    axiosInstance.post('/auth/signin', formData)
+      .then(({ data }) => {
+        setUser({ status: 'logged', data: data.user });
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          setEmailError('Неверный логин или пароль');
+          setPasswordError('Неверный логин или пароль');
+        } else {
+          alert('Произошла ошибка при входе. Попробуйте снова позже.');
+        }
+      });
   };
+
 
   // Функция для получения названия уровня инициативы
   const getLevelName = (levelId) => {
