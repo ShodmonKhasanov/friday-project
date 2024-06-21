@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import { useParams, Link } from 'react-router-dom';
 import axiosInstance from '../api/axiosInstance';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
 export default function OneInitiativePage({ user, getLevelName }) {
   const { id } = useParams();
@@ -15,9 +16,25 @@ export default function OneInitiativePage({ user, getLevelName }) {
     });
   }, [id]);
 
-  // const calculatePercentage = (votesFor, votesCount) => {
-  //   return votesCount > 0 ? ((votesFor / votesCount) * 100).toFixed(2) : 0;
-  // };
+  const handleVote = async (voteType) => {
+    try {
+      const response = await axiosInstance.put(
+        `/initiatives/${initiative.id}/vote`,
+        {
+          voteType,
+        }
+      );
+      console.log('Vote updated:', response.data);
+      // Обновление количества голосов и процента "за"
+      setInitiative((prev) => ({
+        ...prev,
+        votesCount: response.data.votesCount,
+        percentFor: response.data.percentFor,
+      }));
+    } catch (error) {
+      console.error('Error voting:', error);
+    }
+  };
 
   return (
     <Container className='d-flex flex-column justify-content-center '>
@@ -50,6 +67,22 @@ export default function OneInitiativePage({ user, getLevelName }) {
               Все инициативы автора
             </Link>
           </Card.Text>
+          <div>
+            <Button
+              onClick={() => handleVote('for')}
+              variant='success'
+              style={{ width: '100px', margin: '10px 10px' }}
+            >
+              За
+            </Button>
+            <Button
+              onClick={() => handleVote('against')}
+              variant='danger'
+              style={{ width: '100px', margin: '10px 10px' }}
+            >
+              Против
+            </Button>
+          </div>
         </Card.Body>
       </Card>
     </Container>
