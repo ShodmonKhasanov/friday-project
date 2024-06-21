@@ -20,6 +20,6 @@ app.use(express.json());
 
 app.use('/api/auth', authRouter);
 app.use('/api/tokens', tokenRouter);
-app.use('/api/Initiatives', initiativesRouter);
+app.use('/api/initiatives', initiativesRouter);
 
 module.exports = app;
