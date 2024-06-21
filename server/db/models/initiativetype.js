@@ -6,14 +6,17 @@ module.exports = (sequelize, DataTypes) => {
       InitiativeType.hasMany(models.Initiative, { foreignKey: 'initiativeTypeId' });
     }
   }
-  InitiativeType.init({
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    modelName: 'InitiativeType',
-  });
+  InitiativeType.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'InitiativeType',
+    },
+  );
   return InitiativeType;
 };

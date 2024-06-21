@@ -6,14 +6,17 @@ module.exports = (sequelize, DataTypes) => {
       InitLevel.hasMany(models.Initiative, { foreignKey: 'initLevelId' });
     }
   }
-  InitLevel.init({
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    modelName: 'InitLevel',
-  });
+  InitLevel.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'InitLevel',
+    },
+  );
   return InitLevel;
 };

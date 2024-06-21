@@ -41,10 +41,18 @@ module.exports = (sequelize, DataTypes) => {
       initiativeTypeId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: 'InitiativeTypes', // Исправлено на InitiativeTypes
+          key: 'id',
+        },
       },
       initLevelId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: 'InitLevels', // Исправлено на InitLevels
+          key: 'id',
+        },
       },
     },
     {

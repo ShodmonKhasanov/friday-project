@@ -6,23 +6,26 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Initiative, { foreignKey: 'userId' });
     }
   }
-  User.init({
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
+  User.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+    {
+      sequelize,
+      modelName: 'User',
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  );
   return User;
 };

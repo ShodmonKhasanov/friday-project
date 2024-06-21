@@ -12,7 +12,6 @@ app.get('/', async (req, res) => {
   res.status(200).send(`<h1>Vse okay</h1>`);
 });
 
-// Кирилл, ручки на тебе
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -21,6 +20,6 @@ app.use(express.json());
 
 app.use('/api/auth', authRouter);
 app.use('/api/tokens', tokenRouter);
-app.use('/api/initiatives', initiativesRouter);
+app.use('/api/Initiatives', initiativesRouter);
 
 module.exports = app;
