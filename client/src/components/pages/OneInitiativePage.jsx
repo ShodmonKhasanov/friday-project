@@ -8,8 +8,15 @@ import Button from 'react-bootstrap/Button';
 export default function OneInitiativePage({ user, getLevelName }) {
   const { id } = useParams();
   const [initiative, setInitiative] = useState({});
+  const [hasVoted, setHasVoted] = useState(false);
 
   useEffect(() => {
+    // Check local storage if user has already voted for this initiative
+    const hasVotedStorage = localStorage.getItem(`initiative_vote_${id}`);
+    if (hasVotedStorage) {
+      setHasVoted(true);
+    }
+
     axiosInstance(`/initiatives/${id}`).then((res) => {
       console.log(res.data);
       setInitiative(res.data);
@@ -17,6 +24,10 @@ export default function OneInitiativePage({ user, getLevelName }) {
   }, [id]);
 
   const handleVote = async (voteType) => {
+    if (hasVoted) {
+      return;
+    }
+
     try {
       const response = await axiosInstance.put(
         `/initiatives/${initiative.id}/vote`,
@@ -25,12 +36,15 @@ export default function OneInitiativePage({ user, getLevelName }) {
         }
       );
       console.log('Vote updated:', response.data);
-      // Обновление количества голосов и процента "за"
       setInitiative((prev) => ({
         ...prev,
         votesCount: response.data.votesCount,
         percentFor: response.data.percentFor,
       }));
+
+      // Save vote in local storage
+      localStorage.setItem(`initiative_vote_${id}`, voteType);
+      setHasVoted(true);
     } catch (error) {
       console.error('Error voting:', error);
     }
@@ -72,6 +86,7 @@ export default function OneInitiativePage({ user, getLevelName }) {
               onClick={() => handleVote('for')}
               variant='success'
               style={{ width: '100px', margin: '10px 10px' }}
+              disabled={hasVoted}
             >
               За
             </Button>
@@ -79,6 +94,7 @@ export default function OneInitiativePage({ user, getLevelName }) {
               onClick={() => handleVote('against')}
               variant='danger'
               style={{ width: '100px', margin: '10px 10px' }}
+              disabled={hasVoted}
             >
               Против
             </Button>

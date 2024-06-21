@@ -1,19 +1,31 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import { useNavigate } from 'react-router-dom';
 import { StyledCard } from '../styled/StyledCard';
 import axiosInstance from '../api/axiosInstance';
-import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/esm/Button';
-import Container from 'react-bootstrap/esm/Container';
 
 export default function InitiativeCard({ initiative }) {
   const [votes, setVotes] = useState(initiative.votesCount);
+  const [userVote, setUserVote] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // проверка с локал стореджа
+    const storedVote = localStorage.getItem(`initiative_vote_${initiative.id}`);
+    if (storedVote) {
+      setUserVote(storedVote);
+    }
+  }, [initiative.id]);
+
   const handleVote = async (voteType) => {
+    if (userVote) {
+      alert('Вы уже голосовали за эту инициативу!');
+      return;
+    }
+
     try {
       const response = await axiosInstance.put(
         `/initiatives/${initiative.id}/vote`,
@@ -23,6 +35,8 @@ export default function InitiativeCard({ initiative }) {
       );
       console.log('Vote updated:', response.data);
       setVotes((prev) => prev + 1);
+      localStorage.setItem(`initiative_vote_${initiative.id}`, voteType);
+      setUserVote(voteType);
     } catch (error) {
       console.error('Error voting:', error);
     }
@@ -48,7 +62,7 @@ export default function InitiativeCard({ initiative }) {
             <Button
               variant='outline-primary'
               type='submit'
-              onClick={handleDetailClick} 
+              onClick={handleDetailClick}
             >
               Подробнее
             </Button>
@@ -58,6 +72,7 @@ export default function InitiativeCard({ initiative }) {
               onClick={() => handleVote('for')}
               variant='success'
               style={{ width: '100px', margin: '10px 10px' }}
+              disabled={userVote}
             >
               За
             </Button>
@@ -65,6 +80,7 @@ export default function InitiativeCard({ initiative }) {
               onClick={() => handleVote('against')}
               variant='danger'
               style={{ width: '100px', margin: '10px 10px' }}
+              disabled={userVote}
             >
               Против
             </Button>
