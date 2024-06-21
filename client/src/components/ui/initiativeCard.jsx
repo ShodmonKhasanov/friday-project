@@ -11,6 +11,7 @@ export default function InitiativeCard({ initiative }) {
   const [votes, setVotes] = useState(initiative.votesCount);
   const [userVote, setUserVote] = useState(null);
   const navigate = useNavigate();
+  const [isInitiativeExpired, setIsInitiativeExpired] = useState(false);
 
   useEffect(() => {
     // проверка с локал стореджа
@@ -18,7 +19,12 @@ export default function InitiativeCard({ initiative }) {
     if (storedVote) {
       setUserVote(storedVote);
     }
-  }, [initiative.id]);
+
+    // проверка статуса инициативы
+    const currentDate = new Date();
+    const endDate = new Date(initiative.endDate);
+    setIsInitiativeExpired(currentDate > endDate);
+  }, [initiative.id, initiative.endDate]);
 
   const handleVote = async (voteType) => {
     if (userVote) {
@@ -67,24 +73,26 @@ export default function InitiativeCard({ initiative }) {
               Подробнее
             </Button>
           </div>
-          <div>
-            <Button
-              onClick={() => handleVote('for')}
-              variant='success'
-              style={{ width: '100px', margin: '10px 10px' }}
-              disabled={userVote}
-            >
-              За
-            </Button>
-            <Button
-              onClick={() => handleVote('against')}
-              variant='danger'
-              style={{ width: '100px', margin: '10px 10px' }}
-              disabled={userVote}
-            >
-              Против
-            </Button>
-          </div>
+          {!isInitiativeExpired && (
+            <div>
+              <Button
+                onClick={() => handleVote('for')}
+                variant='success'
+                style={{ width: '100px', margin: '10px 10px' }}
+                disabled={userVote}
+              >
+                За
+              </Button>
+              <Button
+                onClick={() => handleVote('against')}
+                variant='danger'
+                style={{ width: '100px', margin: '10px 10px' }}
+                disabled={userVote}
+              >
+                Против
+              </Button>
+            </div>
+          )}
         </StyledCard>
       </Card>
     </Col>
