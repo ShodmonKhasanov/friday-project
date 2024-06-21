@@ -49,7 +49,7 @@ export default function MainPage() {
 
   return (
     <>
-      <Container className="sticky-filter">
+      <Container className="sticky-filter" style={{boxShadow: "0 0 10px black"}}>
         <Form className="checkbox-row">
           <div className="form-check">
             <Form.Check

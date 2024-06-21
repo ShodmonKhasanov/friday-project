@@ -1,3 +1,4 @@
+// App.jsx
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout';
 import MainPage from './components/pages/MainPage';
@@ -9,6 +10,7 @@ import useUser from './components/hooks/useUser';
 import AddInitiativePage from './components/pages/AddInitiativePage';
 import OneInitiativePage from './components/pages/OneInitiativePage';
 import AuthorInitiativesPage from './components/pages/AuthorInitiativesPage';
+import ErrorPage from './components/pages/ErrorPage';
 
 export default function App() {
   const { logoutHandler, signInHandler, signUpHandler, user, getLevelName } = useUser();
@@ -26,7 +28,7 @@ export default function App() {
           path: '/account',
           element: (
             <ProtectedRouter
-              isAllowd={user.status === 'logged'}
+              isAllowed={user?.status === 'logged'}
               redirect='/auth/signin'
             >
               <Account user={user} />
@@ -34,22 +36,25 @@ export default function App() {
           ),
         },
         {
-          element: <ProtectedRouter isAllowd={user.status !== 'logged'} />,
-          children: [
-            {
-              path: '/auth/signup',
-              element: <SignUpPage signUpHandler={signUpHandler} />,
-            },
-            {
-              path: '/auth/signin',
-              element: <SignInPage signInHandler={signInHandler} />,
-            },
-          ],
+          path: '/auth/signup',
+          element: (
+            <ProtectedRouter isAllowed={user?.status !== 'logged'}>
+              <SignUpPage signUpHandler={signUpHandler} />
+            </ProtectedRouter>
+          ),
+        },
+        {
+          path: '/auth/signin',
+          element: (
+            <ProtectedRouter isAllowed={user?.status !== 'logged'}>
+              <SignInPage signInHandler={signInHandler} />
+            </ProtectedRouter>
+          ),
         },
         {
           path: '/add',
           element: (
-            <ProtectedRouter isAllowd={!!user} redirect='/login'>
+            <ProtectedRouter isAllowed={user?.status === 'logged'} redirect='/auth/signin'>
               <AddInitiativePage user={user} />
             </ProtectedRouter>
           ),
@@ -64,9 +69,15 @@ export default function App() {
           path: '/initiatives/author/:id',
           element: <AuthorInitiativesPage getLevelName={getLevelName} />,
         },
+        {
+          path: '*',
+          element: <ErrorPage />,
+        },
       ],
     },
   ]);
 
   return <RouterProvider router={router} />;
 }
+ 
+
