@@ -34,7 +34,7 @@ module.exports = {
         userId: 1,
         votesCount: 150,
         percentFor: 78.9,
-        endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+        endDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         initiativeTypeId: 3, // Предположим, что тип инициативы с ID 6 (благоустройство) существует
         initLevelId: 3, // Муниципалитет
         createdAt: new Date(),
@@ -57,8 +57,8 @@ module.exports = {
         description: 'Подробное описание инициативы по развитию сети общественного транспорта в пригородах с мотивацией.',
         userId: 1,
         votesCount: 130,
-        percentFor: 71.6,
-        endDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+        percentFor: 49.9,
+        endDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         initiativeTypeId: 2, // Транспорт
         initLevelId: 2, // Регион
         createdAt: new Date(),

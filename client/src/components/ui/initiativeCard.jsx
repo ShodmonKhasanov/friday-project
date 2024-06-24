@@ -34,7 +34,12 @@ export default function InitiativeCard({ initiative }) {
         setInitiativeStatus('Инициатива принята');
       }
     }
-  }, [initiative.id, initiative.endDate, initiative.percentFor, isInitiativeExpired]);
+  }, [
+    initiative.id,
+    initiative.endDate,
+    initiative.percentFor,
+    isInitiativeExpired,
+  ]);
 
   const handleVote = async (voteType) => {
     if (userVote) {
@@ -62,6 +67,8 @@ export default function InitiativeCard({ initiative }) {
     navigate(`/initiatives/${initiative.id}`);
   };
 
+  const percentFor = initiative.percentFor;
+
   return (
     <Col md={4} className='mt-2 position-relative'>
       <Card style={{ minHeight: '500px', maxHeight: '500px' }}>
@@ -69,13 +76,17 @@ export default function InitiativeCard({ initiative }) {
           <h3 className='p-2'>{initiative.title}</h3>
           <p className='p-2'>{initiative.description}</p>
           <span>Голосов всего отдано: {votes}</span>
-          <span>Общий процент голосов за: {initiative.percentFor}%</span>
+          <span>Общий процент голосов за: {percentFor.toFixed(2)}%</span>
           <span>
             Дата окончания инициативы:{' '}
             {new Date(initiative.endDate).toLocaleDateString()}
           </span>
           {isInitiativeExpired && (
-            <span className={`p-2 ${initiative.percentFor < 50 ? 'text-danger' : 'text-success'}`}>
+            <span
+              className={`p-2 ${
+                initiative.percentFor < 50 ? 'text-danger' : 'text-success'
+              }`}
+            >
               {initiativeStatus}
             </span>
           )}
@@ -84,6 +95,7 @@ export default function InitiativeCard({ initiative }) {
               variant='outline-primary'
               type='submit'
               onClick={handleDetailClick}
+              className='mb-2'
             >
               Подробнее
             </Button>

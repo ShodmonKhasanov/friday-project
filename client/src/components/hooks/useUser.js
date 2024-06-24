@@ -28,20 +28,22 @@ export default function useUser() {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
     if (!formData.email || !formData.password || !formData.name) {
-      return alert('Пропущены поля для ввода инфы'); // ?
+      return alert('Пропущены поля для ввода инфы');
     }
-    axiosInstance.post('/auth/signup', formData)
-    .then(({ data }) => {
-      setUser({ status: 'logged', data: data.user });
-    })
-    .catch((error) => {
-      // добавил Проверку на ошибку 400, когда email уже используется
-      if (error.response && error.response.status === 400) {
-        alert('Эта почта уже используется. Пожалуйста, используйте другую почту.');
-      } else {
-        alert('Произошла ошибка при регистрации. Попробуйте снова позже.');
-      }
-    });
+    axiosInstance
+      .post('/auth/signup', formData)
+      .then(({ data }) => {
+        setUser({ status: 'logged', data: data.user });
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 400) {
+          alert(
+            'Эта почта уже используется. Пожалуйста, используйте другую почту.'
+          );
+        } else {
+          alert('Произошла ошибка при регистрации. Попробуйте снова позже.');
+        }
+      });
   };
 
   const signInHandler = (e) => {
@@ -55,7 +57,18 @@ export default function useUser() {
     });
   };
 
-  // Функция для получения названия уровня инициативы
+  const googleSignInHandler = (userObject) => {
+    axiosInstance
+      .post('/auth/google-signin', { token: userObject.credential })
+      .then(({ data }) => {
+        setUser({ status: 'logged', data: data.user });
+      })
+      .catch((error) => {
+        console.error('Google sign-in error:', error);
+        alert('Ошибка при входе через Google.');
+      });
+  };
+
   const getLevelName = (levelId) => {
     switch (levelId) {
       case 1:
@@ -75,5 +88,6 @@ export default function useUser() {
     signUpHandler,
     logoutHandler,
     getLevelName,
+    googleSignInHandler,
   };
 }

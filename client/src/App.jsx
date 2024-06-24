@@ -1,4 +1,5 @@
-// App.jsx
+import React from 'react';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout';
 import MainPage from './components/pages/MainPage';
@@ -13,17 +14,21 @@ import AuthorInitiativesPage from './components/pages/AuthorInitiativesPage';
 import ErrorPage from './components/pages/ErrorPage';
 
 export default function App() {
-  const { logoutHandler, signInHandler, signUpHandler, user, getLevelName } = useUser();
+  const {
+    logoutHandler,
+    signInHandler,
+    signUpHandler,
+    user,
+    getLevelName,
+    googleSignInHandler,
+  } = useUser();
 
   const router = createBrowserRouter([
     {
       path: '/',
       element: <Layout user={user} logoutHandler={logoutHandler} />,
       children: [
-        {
-          path: '/',
-          element: <MainPage user={user} />,
-        },
+        { path: '/', element: <MainPage user={user} /> },
         {
           path: '/account',
           element: (
@@ -47,14 +52,20 @@ export default function App() {
           path: '/auth/signin',
           element: (
             <ProtectedRouter isAllowed={user?.status !== 'logged'}>
-              <SignInPage signInHandler={signInHandler} />
+              <SignInPage
+                signInHandler={signInHandler}
+                googleSignInHandler={googleSignInHandler}
+              />
             </ProtectedRouter>
           ),
         },
         {
           path: '/add',
           element: (
-            <ProtectedRouter isAllowed={user?.status === 'logged'} redirect='/auth/signin'>
+            <ProtectedRouter
+              isAllowed={user?.status === 'logged'}
+              redirect='/auth/signin'
+            >
               <AddInitiativePage user={user} />
             </ProtectedRouter>
           ),
@@ -69,15 +80,14 @@ export default function App() {
           path: '/initiatives/author/:id',
           element: <AuthorInitiativesPage getLevelName={getLevelName} />,
         },
-        {
-          path: '*',
-          element: <ErrorPage />,
-        },
+        { path: '*', element: <ErrorPage /> },
       ],
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <GoogleOAuthProvider clientId={`${import.meta.env.VITE_GOOGLE_CLIENT_ID}`}>
+      <RouterProvider router={router} />
+    </GoogleOAuthProvider>
+  );
 }
- 
-
